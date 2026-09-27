@@ -1,6 +1,6 @@
 # 📚 KnowledgeBank
 
-**A role-based PHP document management system** — folders, uploads, download-request approvals, full audit logging, and admin/employee portals, ready to drop into any project.
+**A role-based PHP document management system** — folders, uploads, download-request approvals, full audit logging and admin/employee portals, ready to drop into any project.
 
 ![PHP](https://img.shields.io/badge/PHP-8.0%2B-777BB4?logo=php&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-PDO-4479A1?logo=mysql&logoColor=white)
@@ -33,7 +33,7 @@ KnowledgeBank is a framework-free PHP backend + server-rendered frontend for int
 - ✅ **Folders & documents** — upload, organize into folders, optionally mark a folder confidential (password-protected)
 - ✅ **Approval workflow** — uploads go to `pending` until an admin approves or rejects them
 - ✅ **Download requests** — sensitive documents can require an admin-approved download request before they're released
-- ✅ **Full audit trail** — every login, upload, download, delete, and user-management action is logged with IP, browser, and OS
+- ✅ **Full audit trail** — every login, upload, download, delete and user-management action is logged with IP, browser and OS
 - ✅ **OTP-based password reset** — 6-digit code emailed via SMTP, constant-time comparison
 - ✅ **CSRF protection & session hardening** — HttpOnly + SameSite cookies, per-role session timeouts, brute-force lockout after repeated failed logins
 - ✅ **Env-driven config** — nothing sensitive is hardcoded; everything sensitive lives in `.env`
@@ -124,7 +124,7 @@ Then edit `.env` with your own DB and SMTP credentials. On shared hosting (e.g. 
 php -S localhost:8000
 ```
 
-Or point Apache/Nginx at the project root — `.htaccess` handles routing and blocks direct access to `config/`, `helpers/`, `vendor/`, and `storage/`.
+Or point Apache/Nginx at the project root — `.htaccess` handles routing and blocks direct access to `config/`, `helpers/`, `vendor/` and `storage/`.
 
 ---
 
@@ -140,9 +140,9 @@ Or point Apache/Nginx at the project root — `.htaccess` handles routing and bl
 ## Security & Privacy
 
 - **`.env` is gitignored.** All secrets (DB credentials, SMTP credentials) live only in your local `.env`, never in source control. `.env.example` ships with placeholders only.
-- **`/vendor/`, `/storage/documents/`, `*.sql`, `*.log`, and `composer.lock` are gitignored.** Dependencies are restored with `composer install`; uploaded files, dumps, and logs are never committed.
+- **`/vendor/`, `/storage/documents/`, `*.sql`, `*.log` and `composer.lock` are gitignored.** Dependencies are restored with `composer install`; uploaded files, dumps and logs are never committed.
 - **No hardcoded credentials anywhere in the codebase** — `config/db.php` and `config/settings.php` read exclusively from environment variables, with empty-string defaults rather than real fallback values.
-- **`database/schema.sql` ships with structure only** — no real users, logs, or documents. It contains just the schema and one placeholder bootstrap admin.
+- **`database/schema.sql` ships with structure only** — no real users, logs or documents. It contains just the schema and one placeholder bootstrap admin.
 - **Enforced CSRF Protection** — `validateCsrf()` is wired up on every POST-handling API endpoint (`/api/...`), checking `X-CSRF-Token` headers or JSON body tokens.
 - **Rate Limiting & Anti-Abuse** —
   - `login.php`: Per-email lockout after 5 failed attempts + IP-level rate limiting across all emails.
@@ -152,7 +152,7 @@ Or point Apache/Nginx at the project root — `.htaccess` handles routing and bl
 - **Secure File Preview** — Inline rendering excludes executable types (like SVG).
 - **ClamAV Malware Protection Warning** — Admin dashboard & settings display a clear warning banner when malware scanning is inactive.
 
-Before deploying: change the bootstrap admin password, set your own SMTP credentials, and review `ALLOWED_EXTENSIONS` / `DEFAULT_MAX_UPLOAD_BYTES` in `config/settings.php` for your use case.
+Before deploying: change the bootstrap admin password, set your own SMTP credentials and review `ALLOWED_EXTENSIONS` / `DEFAULT_MAX_UPLOAD_BYTES` in `config/settings.php` for your use case.
 
 ---
 
@@ -169,7 +169,7 @@ Before deploying: change the bootstrap admin password, set your own SMTP credent
 
 ## Contributing
 
-This project is meant to be a solid starting structure — fork it, extend it, or open a PR.
+This project is meant to be a solid starting structure — fork it, extend it or open a PR.
 
 1. Fork the repo and create a feature branch.
 2. Keep the existing style: PDO + prepared statements, env-driven config, no framework.
