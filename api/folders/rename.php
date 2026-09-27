@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $authUser = requireAdmin(); // only admins can rename folders
+validateCsrf();
 $db       = getDB();
 
 $input = json_decode(file_get_contents('php://input'), true);

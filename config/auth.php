@@ -80,10 +80,17 @@ function validateCsrf(): void {
     $token = $_POST['csrf_token']
           ?? ($_SERVER['HTTP_X_CSRF_TOKEN'] ?? '');
 
+    if (empty($token)) {
+        $input = json_decode(file_get_contents('php://input'), true);
+        if (is_array($input) && !empty($input['csrf_token'])) {
+            $token = (string)$input['csrf_token'];
+        }
+    }
+
     if (empty($token) || !hash_equals($_SESSION['csrf_token'] ?? '', $token)) {
         http_response_code(403);
         header('Content-Type: application/json');
-        echo json_encode(['success' => false, 'message' => 'Invalid CSRF token.']);
+        echo json_encode(['success' => false, 'message' => 'Invalid or missing CSRF token.']);
         exit;
     }
 }

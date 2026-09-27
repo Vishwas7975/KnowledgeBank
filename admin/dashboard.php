@@ -8,6 +8,7 @@ $activePage = 'dashboard';
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="<?= htmlspecialchars(generateCsrfToken()) ?>">
 <title>Admin Dashboard — KnowledgeBank</title>
 <link rel="icon" type="image/png" href="/assets/images/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,6 +158,22 @@ $activePage = 'dashboard';
 
     <!-- Content Body -->
     <div class="content-body">
+
+      <?php
+      require_once __DIR__ . '/../config/settings.php';
+      if (!defined('CLAMAV_ENABLED') || !CLAMAV_ENABLED):
+      ?>
+        <div style="background:#fffbeb; border:1px solid #fde68a; border-left:4px solid #d97706; border-radius:12px; padding:14px 18px; margin-bottom:24px; color:#92400e; font-size:0.84rem; display:flex; align-items:center; gap:12px; box-shadow:var(--shadow-sm);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" style="flex-shrink:0;">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <div>
+            <strong>Malware Scanning (ClamAV) is Disabled</strong> — <code>CLAMAV_ENABLED</code> is set to <code>false</code> in <code>config/settings.php</code>. Uploaded documents will not be scanned for viruses. Enable ClamAV if hosting on a VPS.
+          </div>
+        </div>
+      <?php endif; ?>
 
       <!-- Metrics Row -->
       <div class="metrics-grid">

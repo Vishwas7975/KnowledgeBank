@@ -13,6 +13,7 @@ if (!empty($_SESSION['user_id'])) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="<?= htmlspecialchars(generateCsrfToken()) ?>">
 <title>Reset Password — KnowledgeBank</title>
 <link rel="icon" type="image/png" href="/assets/images/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -267,7 +268,7 @@ async function handleRequestOtp(e) {
   resetEmail = document.getElementById('email').value.trim();
   const btn = document.getElementById('btn-step-1');
   btn.disabled = true;
-  btn.textContent = 'Sending Code...';
+  btn.innerHTML = `<span class="spinner"></span> <span>Sending Code...</span>`;
 
   try {
     const res = await fetch('/api/auth/forgot-password.php', {
@@ -284,10 +285,10 @@ async function handleRequestOtp(e) {
       showToast(data.message || 'Failed to send OTP.', 'error');
     }
   } catch (err) {
-    showToast('Network error.', 'error');
+    showToast('Network error. Please try again.', 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Send Verification Code';
+    btn.innerHTML = 'Send Verification Code';
   }
 }
 
@@ -297,7 +298,7 @@ async function handleResetPassword(e) {
   const new_password = document.getElementById('new_password').value.trim();
   const btn = document.getElementById('btn-step-2');
   btn.disabled = true;
-  btn.textContent = 'Resetting...';
+  btn.innerHTML = `<span class="spinner"></span> <span>Resetting...</span>`;
 
   try {
     const res = await fetch('/api/auth/reset-password.php', {
@@ -313,10 +314,10 @@ async function handleResetPassword(e) {
       showToast(data.message || 'Reset failed.', 'error');
     }
   } catch (err) {
-    showToast('Network error.', 'error');
+    showToast('Network error. Please try again.', 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Reset Password';
+    btn.innerHTML = 'Reset Password';
   }
 }
 </script>

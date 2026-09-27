@@ -10,6 +10,7 @@ $topbarTitle = 'Document & Folder Management';
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="<?= htmlspecialchars(generateCsrfToken()) ?>">
 <title>Documents & Folders — KnowledgeBank Admin</title>
 <link rel="icon" type="image/png" href="/assets/images/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -410,7 +411,7 @@ function updateBulkBar() {
 
 async function approveDocument(id) {
   try {
-    const res = await fetch('/api/documents/approve.php', {
+    const res = await fetchWithCsrf('/api/documents/approve.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })
@@ -430,7 +431,7 @@ async function approveDocument(id) {
 async function deleteDocument(id) {
   if (!confirm('Are you sure you want to delete this document?')) return;
   try {
-    const res = await fetch('/api/documents/delete.php', {
+    const res = await fetchWithCsrf('/api/documents/delete.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })
@@ -506,7 +507,7 @@ async function handleUploadSubmit(e) {
   }
 
   try {
-    const res = await fetch('/api/documents/upload.php', {
+    const res = await fetchWithCsrf('/api/documents/upload.php', {
       method: 'POST',
       body: formData
     });
@@ -537,7 +538,7 @@ async function handleCreateFolderSubmit(e) {
   btn.textContent = 'Creating...';
 
   try {
-    const res = await fetch('/api/folders/create.php', {
+    const res = await fetchWithCsrf('/api/folders/create.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name })

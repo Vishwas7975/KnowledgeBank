@@ -17,6 +17,30 @@ function toggleProfileDropdown(e) {
   }
 }
 
+// Retrieve CSRF Token from meta tag or sessionStorage
+function getCsrfToken() {
+  const meta = document.querySelector('meta[name="csrf-token"]');
+  if (meta && meta.content) return meta.content;
+  return sessionStorage.getItem('csrf_token') || '';
+}
+
+// Wrapper for fetch() that automatically attaches X-CSRF-Token on POST/PUT/DELETE requests
+async function fetchWithCsrf(url, options = {}) {
+  options.headers = options.headers || {};
+  const method = (options.method || 'GET').toUpperCase();
+  if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
+    const token = getCsrfToken();
+    if (token) {
+      if (options.headers instanceof Headers) {
+        options.headers.set('X-CSRF-Token', token);
+      } else {
+        options.headers['X-CSRF-Token'] = token;
+      }
+    }
+  }
+  return fetch(url, options);
+}
+
 // Close dropdowns when clicking outside
 document.addEventListener('click', (e) => {
   const dropdown = document.getElementById('topbarProfileDropdown');

@@ -8,6 +8,7 @@ $activePage = 'users';
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="<?= htmlspecialchars(generateCsrfToken()) ?>">
 <title>User Management — KnowledgeBank Admin</title>
 <link rel="icon" type="image/png" href="/assets/images/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -226,7 +227,7 @@ function filterUsers() {
 async function deactivateUser(id) {
   if (!confirm('Deactivate this user account?')) return;
   try {
-    const res = await fetch('/api/users/deactivate.php', {
+    const res = await fetchWithCsrf('/api/users/deactivate.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })
@@ -245,7 +246,7 @@ async function deactivateUser(id) {
 
 async function reactivateUser(id) {
   try {
-    const res = await fetch('/api/users/reactivate.php', {
+    const res = await fetchWithCsrf('/api/users/reactivate.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })
@@ -285,7 +286,7 @@ async function handleCreateUser(e) {
   btn.textContent = 'Creating...';
 
   try {
-    const res = await fetch('/api/users/create.php', {
+    const res = await fetchWithCsrf('/api/users/create.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, employee_id, department, email, password, role })

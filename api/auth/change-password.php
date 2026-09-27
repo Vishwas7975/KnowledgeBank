@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $authUser = requireAuth();
+validateCsrf();
 
 $data        = json_decode(file_get_contents('php://input'), true);
 $currentPass = trim($data['current_password'] ?? '');

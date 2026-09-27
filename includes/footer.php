@@ -147,7 +147,7 @@ function closeDocumentPreview() {
 // ── Handle Logout ───────────────────────────────────────────
 async function handleLogout() {
   try {
-    const res = await fetch('/api/auth/logout.php', { method: 'POST' });
+    const res = await fetchWithCsrf('/api/auth/logout.php', { method: 'POST' });
     const data = await res.json();
     if (data.success) {
       window.location.href = '/login.php';

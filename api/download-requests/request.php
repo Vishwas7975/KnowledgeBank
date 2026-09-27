@@ -8,6 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $authUser = requireAuth();
+validateCsrf();
 $input = json_decode(file_get_contents('php://input'), true);
 $docId = isset($input['document_id']) ? (int)$input['document_id'] : 0;
 if (!$docId) { http_response_code(400); echo json_encode(['success'=>false,'message'=>'Document ID is required.']); exit; }

@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $authUser = requireAdmin();
+validateCsrf();
 
 $data       = json_decode(file_get_contents('php://input'), true);
 $id         = isset($data['id']) ? (int)$data['id'] : 0;

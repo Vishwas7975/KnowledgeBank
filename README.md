@@ -140,12 +140,17 @@ Or point Apache/Nginx at the project root — `.htaccess` handles routing and bl
 ## Security & Privacy
 
 - **`.env` is gitignored.** All secrets (DB credentials, SMTP credentials) live only in your local `.env`, never in source control. `.env.example` ships with placeholders only.
-- **`/vendor/` and `/storage/documents/` are gitignored.** Dependencies are restored with `composer install`; uploaded files are never committed.
+- **`/vendor/`, `/storage/documents/`, `*.sql`, `*.log`, and `composer.lock` are gitignored.** Dependencies are restored with `composer install`; uploaded files, dumps, and logs are never committed.
 - **No hardcoded credentials anywhere in the codebase** — `config/db.php` and `config/settings.php` read exclusively from environment variables, with empty-string defaults rather than real fallback values.
 - **`database/schema.sql` ships with structure only** — no real users, logs, or documents. It contains just the schema and one placeholder bootstrap admin.
-- **CSRF tokens** required on state-changing requests; **session cookies** are HttpOnly + SameSite, with separate configurable timeouts for admin vs employee sessions.
-- **Brute-force lockout** — failed logins are tracked per email/IP via the `failed_logins` table.
-- **OTP comparison uses `hash_equals()`** (constant-time) to avoid timing attacks on the password-reset code.
+- **Enforced CSRF Protection** — `validateCsrf()` is wired up on every POST-handling API endpoint (`/api/...`), checking `X-CSRF-Token` headers or JSON body tokens.
+- **Rate Limiting & Anti-Abuse** —
+  - `login.php`: Per-email lockout after 5 failed attempts + IP-level rate limiting across all emails.
+  - `forgot-password.php`: 1 OTP request per email per 60 seconds + IP-level rate limiting (max 5 requests per 15 mins).
+- **OTP Brute-Force Throttling** — `reset-password.php` locks and invalidates OTP reset codes after 5 wrong attempts.
+- **Constant-Time Comparison** — OTP and token checks use `hash_equals()` to prevent timing attacks.
+- **Secure File Preview** — Inline rendering excludes executable types (like SVG).
+- **ClamAV Malware Protection Warning** — Admin dashboard & settings display a clear warning banner when malware scanning is inactive.
 
 Before deploying: change the bootstrap admin password, set your own SMTP credentials, and review `ALLOWED_EXTENSIONS` / `DEFAULT_MAX_UPLOAD_BYTES` in `config/settings.php` for your use case.
 
@@ -154,7 +159,9 @@ Before deploying: change the bootstrap admin password, set your own SMTP credent
 ## Roadmap
 
 - [ ] Automated tests for the approval and download-request workflows
-- [ ] Rate limiting on `forgot-password` to slow down OTP-spam attempts
+- [x] Rate limiting on `forgot-password` and IP-based rate limiting on auth endpoints
+- [x] CSRF protection wired into all state-changing API POST handlers
+- [x] OTP guess-throttling & lockout after 5 failed attempts
 - [ ] Optional virus scanning on upload (ClamAV hook already stubbed in `config/settings.php`, disabled by default for shared hosting)
 - [ ] Bulk document actions (approve/reject/delete multiple at once)
 

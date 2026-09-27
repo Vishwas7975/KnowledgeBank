@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 startSession();
+validateCsrf();
 
 if (!empty($_SESSION['user_id'])) {
     logActivity($_SESSION['user_id'], 'logout', null, 'User logged out.');

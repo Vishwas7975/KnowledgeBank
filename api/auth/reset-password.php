@@ -15,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $data        = json_decode(file_get_contents('php://input'), true);
 $email       = strtolower(trim($data['email']           ?? ''));
 $otp         = trim($data['otp']                        ?? '');
-$newPassword = $data['new_password']                    ?? '';
-$confirmPass = $data['confirm_password']                ?? '';
+$newPassword = $data['new_password']                    ?? ($data['password'] ?? '');
+$confirmPass = $data['confirm_password']                ?? $newPassword;
 
 if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     http_response_code(400);
@@ -55,7 +55,7 @@ if (!preg_match('/^(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$/', $newPassword)) {
 $db = getDB();
 
 $stmt = $db->prepare(
-    'SELECT otp, expires_at FROM password_resets
+    'SELECT id, otp, expires_at, COALESCE(attempts, 0) AS attempts FROM password_resets
      WHERE email = ? ORDER BY created_at DESC LIMIT 1'
 );
 $stmt->execute([$email]);
@@ -67,6 +67,14 @@ if (!$record) {
     exit;
 }
 
+// Check attempt counter lockout (5 max attempts)
+if ((int)$record['attempts'] >= 5) {
+    $db->prepare('DELETE FROM password_resets WHERE email = ?')->execute([$email]);
+    http_response_code(429);
+    echo json_encode(['success' => false, 'message' => 'Too many failed attempts. This OTP code has been locked. Please request a new one.']);
+    exit;
+}
+
 if (new DateTime() > new DateTime($record['expires_at'])) {
     $db->prepare('DELETE FROM password_resets WHERE email = ?')->execute([$email]);
     http_response_code(400);
@@ -75,8 +83,24 @@ if (new DateTime() > new DateTime($record['expires_at'])) {
 }
 
 if (!hash_equals($record['otp'], $otp)) {
+    try {
+        $db->prepare('UPDATE password_resets SET attempts = COALESCE(attempts, 0) + 1 WHERE id = ?')->execute([$record['id']]);
+    } catch (\Throwable $e) {
+        // Fallback if attempts column not present
+    }
+
+    $currentAttempts = (int)$record['attempts'] + 1;
+    $remainingAttempts = 5 - $currentAttempts;
+
+    if ($remainingAttempts <= 0) {
+        $db->prepare('DELETE FROM password_resets WHERE email = ?')->execute([$email]);
+        http_response_code(429);
+        echo json_encode(['success' => false, 'message' => 'Too many failed attempts. This OTP code has been locked. Please request a new one.']);
+        exit;
+    }
+
     http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Invalid OTP. Please check your email and try again.']);
+    echo json_encode(['success' => false, 'message' => "Invalid OTP. You have {$remainingAttempts} attempt(s) remaining."]);
     exit;
 }
 

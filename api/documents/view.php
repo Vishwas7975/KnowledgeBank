@@ -31,9 +31,12 @@ if ($id < 1) {
 // ── Fetch document record ────────────────────────────────────
 $db   = getDB();
 $stmt = $db->prepare(
-    'SELECT id, original_name, stored_name, file_type, file_size
-     FROM documents
-     WHERE id = ? AND is_deleted = 0
+    'SELECT d.id, d.original_name, d.stored_name, d.file_type, d.file_size,
+            d.status, d.folder_id,
+            COALESCE(f.is_confidential, 0) AS is_confidential
+     FROM documents d
+     LEFT JOIN folders f ON f.id = d.folder_id AND f.is_deleted = 0
+     WHERE d.id = ? AND d.is_deleted = 0
      LIMIT 1'
 );
 $stmt->execute([$id]);
@@ -42,6 +45,30 @@ $doc = $stmt->fetch();
 if (!$doc) {
     http_response_code(404);
     exit('Document not found.');
+}
+
+// ── Role-based access gates ───────────────────────────────────
+$isAdmin = ($_SESSION['role'] === 'admin');
+
+// 1. Employees cannot view unapproved documents
+if (!$isAdmin && $doc['status'] !== 'approved') {
+    http_response_code(403);
+    exit('This document is not yet approved.');
+}
+
+// 2. For confidential folders, employees need an active approved download request
+if (!$isAdmin && $doc['is_confidential']) {
+    $drStmt = $db->prepare(
+        "SELECT id FROM download_requests
+         WHERE document_id = ? AND requested_by = ? AND status = 'approved'
+           AND (expires_at IS NULL OR expires_at > NOW())
+         LIMIT 1"
+    );
+    $drStmt->execute([$doc['id'], (int)$_SESSION['user_id']]);
+    if (!$drStmt->fetch()) {
+        http_response_code(403);
+        exit('Access denied. You need an approved download request to view this document.');
+    }
 }
 
 // ── Resolve file path ─────────────────────────────────────────
@@ -68,7 +95,6 @@ $inlineMimes = [
     'image/png',
     'image/gif',
     'image/webp',
-    'image/svg+xml',
     'text/plain',
 ];
 $disposition = in_array($doc['file_type'], $inlineMimes, true) ? 'inline' : 'attachment';

@@ -8,6 +8,7 @@ $activePage = 'my-uploads';
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="<?= htmlspecialchars(generateCsrfToken()) ?>">
 <title>My Uploads — KnowledgeBank</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -328,7 +329,7 @@ async function doUpload() {
   let prog = 0;
   const iv = setInterval(() => { prog = Math.min(prog+8, 88); document.getElementById('progressBar').style.width = prog+'%'; }, 120);
   try {
-    const res  = await fetch('/api/documents/upload.php', { method:'POST', body:fd });
+    const res  = await fetchWithCsrf('/api/documents/upload.php', { method:'POST', body:fd });
     const data = await res.json();
     clearInterval(iv);
     document.getElementById('progressBar').style.width = '100%';
@@ -367,7 +368,7 @@ function closeDeleteModal() { delId = null; document.getElementById('deleteModal
 async function doDelete() {
   if (!delId) return;
   try {
-    const res  = await fetch('/api/documents/delete.php', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:delId}) });
+    const res  = await fetchWithCsrf('/api/documents/delete.php', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:delId}) });
     const data = await res.json();
     closeDeleteModal();
     showToast(data.message || 'Done.', data.success ? 'success' : 'error');

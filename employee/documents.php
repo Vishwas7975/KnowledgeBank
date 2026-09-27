@@ -8,6 +8,7 @@ $activePage = 'documents';
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="<?= htmlspecialchars(generateCsrfToken()) ?>">
 <title>Document Library — KnowledgeBank</title>
 <link rel="icon" type="image/png" href="/assets/images/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -181,7 +182,7 @@ function filterDocuments() {
 
 async function requestDownload(docId) {
   try {
-    const res = await fetch('/api/download-requests/request.php', {
+    const res = await fetchWithCsrf('/api/download-requests/request.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ document_id: docId })
@@ -227,7 +228,7 @@ async function handleUploadSubmit(e) {
   formData.append('file', fileInput.files[0]);
 
   try {
-    const res = await fetch('/api/documents/upload.php', {
+    const res = await fetchWithCsrf('/api/documents/upload.php', {
       method: 'POST',
       body: formData
     });

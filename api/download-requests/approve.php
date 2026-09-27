@@ -6,6 +6,7 @@ require_once __DIR__ . '/../../config/auth.php';
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); echo json_encode(['success'=>false,'message'=>'Method not allowed.']); exit; }
 
 $authUser = requireAdmin();
+validateCsrf();
 $input = json_decode(file_get_contents('php://input'), true);
 $reqId = isset($input['request_id']) ? (int)$input['request_id'] : 0;
 if (!$reqId) { http_response_code(400); echo json_encode(['success'=>false,'message'=>'Request ID required.']); exit; }

@@ -47,5 +47,6 @@ echo json_encode([
     'user_id'           => $_SESSION['user_id'],
     'role'              => $_SESSION['role'],
     'name'              => $_SESSION['name'],
+    'csrf_token'        => generateCsrfToken(),
     'seconds_remaining' => $remaining,
 ]);

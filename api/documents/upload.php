@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 
 $authUser = requireAuth();
+validateCsrf();
 
 // ── Check file was sent ────────────────────────────────────────
 if (empty($_FILES['file'])) {

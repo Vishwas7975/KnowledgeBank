@@ -26,9 +26,28 @@ $db = getDB();
 $ua = parseUserAgent();
 $ip = getClientIp();
 
-// ── Check account lockout ──────────────────────────────────────
+// ── Check account & IP lockout ──────────────────────────────────
 $maxAttempts = (int) getSystemSetting('max_failed_login_attempts', 5);
 
+// 1. IP-based rate limiting across multiple emails (enumeration defense)
+$ipLockStmt = $db->prepare(
+    'SELECT SUM(attempt_count) AS total_ip_attempts FROM failed_logins
+     WHERE ip_address = ? AND attempt_time > DATE_SUB(NOW(), INTERVAL 15 MINUTE)'
+);
+$ipLockStmt->execute([$ip]);
+$ipLockRow = $ipLockStmt->fetch();
+$maxIpAttempts = $maxAttempts * 3; // Max 15 failed attempts per IP per 15 minutes
+
+if ($ipLockRow && (int)$ipLockRow['total_ip_attempts'] >= $maxIpAttempts) {
+    http_response_code(429);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Too many failed login attempts from your IP address. Please try again in 15 minutes.'
+    ]);
+    exit;
+}
+
+// 2. Email-specific lockout
 $lockStmt = $db->prepare(
     'SELECT attempt_count FROM failed_logins
      WHERE email_attempted = ? AND ip_address = ?

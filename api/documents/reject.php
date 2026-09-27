@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $authUser = requireAdmin();
+validateCsrf();
 $db       = getDB();
 
 $body   = json_decode(file_get_contents('php://input'), true);

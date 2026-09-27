@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $authUser = requireAuth();
+validateCsrf();
 $db       = getDB();
 
 // ── Validate folder ────────────────────────────────────────────

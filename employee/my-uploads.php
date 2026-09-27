@@ -8,6 +8,7 @@ $activePage = 'my-uploads';
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="<?= htmlspecialchars(generateCsrfToken()) ?>">
 <title>My Uploads — KnowledgeBank</title>
 <link rel="icon" type="image/png" href="/assets/images/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -169,7 +170,7 @@ async function handleUploadSubmit(e) {
   formData.append('file', fileInput.files[0]);
 
   try {
-    const res = await fetch('/api/documents/upload.php', {
+    const res = await fetchWithCsrf('/api/documents/upload.php', {
       method: 'POST',
       body: formData
     });

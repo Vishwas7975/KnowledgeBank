@@ -10,8 +10,10 @@
 /storage/documents/*
 !/storage/documents/.gitkeep
 
-# ── Database dumps ────────────────────────────────────────────────────────
-*.sql
+# ── Database dumps (ignore root-level dumps; keep database/schema.sql) ────────
+# Root-anchored glob: only ignores *.sql files in the project root, not subdirs.
+# This lets database/schema.sql be tracked while keeping backup dumps out.
+/*.sql
 *.sql.bak
 *.sqlite
 *.sqlite3

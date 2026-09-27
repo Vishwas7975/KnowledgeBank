@@ -14,6 +14,7 @@ if (!empty($_SESSION['user_id'])) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="<?= htmlspecialchars(generateCsrfToken()) ?>">
 <title>KnowledgeBank — Enterprise Access Portal</title>
 <link rel="icon" type="image/png" href="/assets/images/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -312,7 +313,7 @@ async function handleLoginSubmit(e) {
   const password = document.getElementById('password').value.trim();
 
   btn.disabled = true;
-  btn.innerHTML = `<span>Authenticating...</span>`;
+  btn.innerHTML = `<span class="spinner"></span> <span>Authenticating...</span>`;
 
   try {
     const res = await fetch('/api/auth/login.php', {
@@ -324,6 +325,9 @@ async function handleLoginSubmit(e) {
     const data = await res.json();
 
     if (data.success) {
+      if (data.csrf_token) {
+        sessionStorage.setItem('csrf_token', data.csrf_token);
+      }
       showToast('Login successful. Redirecting...', 'success');
       setTimeout(() => {
         if (data.user && data.user.role === 'admin') {

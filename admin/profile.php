@@ -26,6 +26,7 @@ $userInit     = strtoupper(substr($userName, 0, 1));
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="<?= htmlspecialchars(generateCsrfToken()) ?>">
 <title>Admin Profile — KnowledgeBank Admin</title>
 <link rel="icon" type="image/png" href="/assets/images/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -305,7 +306,7 @@ async function handleChangePassword(e) {
   btn.innerText = 'Updating...';
 
   try {
-    const res = await fetch('/api/users/change-password.php', {
+    const res = await fetchWithCsrf('/api/users/change-password.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ current_password, new_password, confirm_password })

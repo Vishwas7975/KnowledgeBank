@@ -12,12 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$authUser = getAuthUser();
-if (!$authUser) {
-    http_response_code(401);
-    echo json_encode(['success' => false, 'message' => 'Unauthorized access.']);
-    exit;
-}
+$authUser = requireAuth();
+validateCsrf();
 
 $data            = json_decode(file_get_contents('php://input'), true);
 $currentPassword = $data['current_password'] ?? '';

@@ -9,6 +9,7 @@ $userName   = $_SESSION['name'] ?? 'Employee';
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="<?= htmlspecialchars(generateCsrfToken()) ?>">
 <title>Change Password — KnowledgeBank (Admin)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -299,7 +300,7 @@ async function changePassword() {
   const btn = document.getElementById('saveBtn');
   btn.classList.add('loading');
   try {
-    const res  = await fetch('/api/auth/change-password.php', {
+    const res  = await fetchWithCsrf('/api/auth/change-password.php', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ current_password: current, new_password: newPass, confirm_password: confirm }),
     });
