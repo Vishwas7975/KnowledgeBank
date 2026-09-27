@@ -1,0 +1,50 @@
+# ============================================================
+#  KnowledgeBank — Root .htaccess
+# ============================================================
+
+# ── Enable URL rewriting ─────────────────────────────────────
+Options -Indexes
+RewriteEngine On
+
+# ── Direct bare root to index.php landing page ──────────────
+RewriteRule ^$ /index.php [L]
+
+# ── Allow API requests to pass through directly ──────────────
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# ── Block direct browser access to sensitive folders ─────────
+RewriteRule ^config/           - [F,L]
+RewriteRule ^helpers/          - [F,L]
+RewriteRule ^vendor/           - [F,L]
+RewriteRule ^storage/          - [F,L]
+
+# ── Security headers (Apache mod_headers) ───────────────────
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header unset Server
+    Header unset X-Powered-By
+</IfModule>
+
+# ── PHP settings ─────────────────────────────────────────────
+<IfModule mod_php.c>
+    php_value upload_max_filesize 50M
+    php_value post_max_size       55M
+    php_value max_execution_time  120
+    php_value memory_limit        256M
+</IfModule>
+
+# ── Deny access to hidden files (.env, .git, etc.) ──────────
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# ── Deny access to SQL and config files ─────────────────────
+<FilesMatch "\.(sql|json|lock|md)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

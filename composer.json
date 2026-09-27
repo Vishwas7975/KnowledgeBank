@@ -1,0 +1,10 @@
+{
+    "name": "vishwas7975/knowledgebank",
+    "description": "A lightweight PHP knowledge/document management system with role-based access, folders, audit logging, and OTP-based password reset.",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.0",
+        "phpmailer/phpmailer": "^7.1"
+    }
+}

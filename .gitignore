@@ -1,0 +1,34 @@
+# ── Environment & secrets ────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Dependencies (restore with `composer install`) ──────────────────────
+/vendor/
+
+# ── Uploaded documents (real user data — never commit) ───────────────────
+/storage/documents/*
+!/storage/documents/.gitkeep
+
+# ── Database dumps ────────────────────────────────────────────────────────
+*.sql
+*.sql.bak
+*.sqlite
+*.sqlite3
+*.db
+
+# ── Logs ─────────────────────────────────────────────────────────────────
+*.log
+/logs/
+
+# ── Cache / build artifacts ─────────────────────────────────────────────
+/cache/
+/.cache/
+*.cache
+
+# ── OS / editor cruft ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
