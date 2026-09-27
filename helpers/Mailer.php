@@ -72,7 +72,7 @@ class Mailer
                 <hr style="border:none;border-top:1px solid #f1f5f9;margin:0 0 20px;">
 
                 <p style="font-size:11px;text-align:center;color:#94a3b8;margin:0;">
-                    &copy; 2026 KnowledgeBank Technologies Pvt Ltd. All rights reserved.
+                    &copy; 2026 KnowledgeBank. All rights reserved.
                 </p>
             </div>
         </body>

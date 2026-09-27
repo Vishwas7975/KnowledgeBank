@@ -13,7 +13,7 @@ $stmt->execute([$authUser['id']]);
 $user = $stmt->fetch();
 
 $userName     = htmlspecialchars($user['name'] ?? 'Admin User');
-$userEmail    = htmlspecialchars($user['email'] ?? 'admin@knowledgebank.com');
+$userEmail    = htmlspecialchars($user['email'] ?? 'admin@example.com');
 $userEmpId    = htmlspecialchars($user['employee_id'] ?? 'VAI-AI-0002');
 $userRole     = ucfirst(htmlspecialchars($user['role'] ?? 'admin'));
 $userDept     = htmlspecialchars($user['department'] ?? 'Admin');

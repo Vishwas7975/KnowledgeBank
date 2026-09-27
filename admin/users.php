@@ -122,7 +122,7 @@ $activePage = 'users';
 
           <div>
             <label class="form-label" for="newEmail">Email Address</label>
-            <input type="email" id="newEmail" class="form-input" required placeholder="user@knowledgebank.com" />
+            <input type="email" id="newEmail" class="form-input" required placeholder="user@example.com" />
           </div>
 
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">

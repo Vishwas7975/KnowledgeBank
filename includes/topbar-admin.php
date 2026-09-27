@@ -6,7 +6,7 @@ if (!isset($authUser)) {
 }
 
 $userName  = htmlspecialchars($authUser['name'] ?? 'Admin User');
-$userEmail = htmlspecialchars($authUser['email'] ?? 'admin@knowledgebank.com');
+$userEmail = htmlspecialchars($authUser['email'] ?? 'admin@example.com');
 $userRole  = ucfirst(htmlspecialchars($authUser['role'] ?? 'Admin'));
 $userInit  = strtoupper(substr($userName, 0, 1));
 $title     = htmlspecialchars($topbarTitle ?? 'Admin Dashboard');

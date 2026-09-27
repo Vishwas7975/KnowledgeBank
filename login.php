@@ -200,7 +200,7 @@ if (!empty($_SESSION['user_id'])) {
       <div class="form-group">
         <label class="form-label">Work Email</label>
         <div class="input-wrapper">
-          <input type="email" id="email" class="form-input" style="padding-right:16px;" placeholder="user@knowledgebank.com" required />
+          <input type="email" id="email" class="form-input" style="padding-right:16px;" placeholder="user@example.com" required />
           <svg class="input-icon-left" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
             <polyline points="22,6 12,13 2,6"/>
