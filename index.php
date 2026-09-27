@@ -380,7 +380,7 @@ if (!empty($_SESSION['user_id'])) {
 <nav class="landing-nav">
   <div style="display:flex; align-items:center; gap:12px;">
     <img src="/assets/images/logo.png" alt="KnowledgeBank Logo" class="nav-logo-img" />
-    <span style="font-size:1.35rem; font-weight:800; color:#0f172a; letter-spacing:-0.5px;">KnowledgeBank <span style="color:#2563eb;">AI</span></span>
+    <span style="font-size:1.35rem; font-weight:800; color:#0f172a; letter-spacing:-0.5px;">KnowledgeBank</span>
   </div>
 
   <ul class="nav-menu">
@@ -585,13 +585,13 @@ if (!empty($_SESSION['user_id'])) {
       <div class="footer-brand-col">
         <div class="f-brand-header">
           <img src="/assets/images/logo.png" alt="KnowledgeBank Logo" class="f-logo-img" />
-          <span class="f-brand-title">KnowledgeBank<span style="color:#2563eb;">AI</span></span>
+          <span class="f-brand-title">KnowledgeBank</span>
         </div>
         <p class="f-brand-desc">
-          Enterprise AI & automation agency building the platforms that power next-generation businesses.
+          Secure, role-based document management for growing teams.
         </p>
         <div class="f-social-links">
-          <a href="https://www.linkedin.com/company/99024024/" target="_blank" class="social-icon-box" title="LinkedIn">
+          <a href="#" target="_blank" class="social-icon-box" title="LinkedIn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.78a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z"/></svg>
           </a>
           <a href="#" target="_blank" class="social-icon-box" title="Instagram">
@@ -632,8 +632,6 @@ if (!empty($_SESSION['user_id'])) {
         <ul class="f-links-list f-contact-list">
           <li><a href="mailto:hr@example.com">hr@example.com</a></li>
           <li><a href="mailto:support@example.com">support@example.com</a></li>
-          <li><a href="tel:+918106975810">+91 81069 75810</a></li>
-          <li><a href="tel:+919618013827">+91 96180 13827</a></li>
         </ul>
       </div>
     </div>

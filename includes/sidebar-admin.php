@@ -9,7 +9,7 @@ if (!isset($activePage)) {
   <div class="sidebar-brand">
     <div style="display:flex; align-items:center; gap:10px;">
       <img src="/assets/images/logo.png" alt="KnowledgeBank Logo" class="brand-company-logo" />
-      <span style="font-size:1.15rem; font-weight:800; color:#0f172a; letter-spacing:-0.4px;">KnowledgeBank <span style="color:#2563eb;">AI</span></span>
+      <span style="font-size:1.15rem; font-weight:800; color:#0f172a; letter-spacing:-0.4px;">KnowledgeBank</span>
     </div>
     <button class="sidebar-close-btn" onclick="toggleMobileSidebar()" title="Close Sidebar">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

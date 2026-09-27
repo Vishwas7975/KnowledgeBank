@@ -11,7 +11,7 @@ $userInit  = strtoupper(substr($userName, 0, 1));
 <aside class="sidebar">
   <div class="sidebar-brand">
     <img src="/assets/images/logo.png" alt="KnowledgeBank Logo" class="brand-company-logo" />
-    <span style="font-size:1.15rem; font-weight:800; color:#0f172a; letter-spacing:-0.4px;">KnowledgeBank <span style="color:#2563eb;">AI</span></span>
+    <span style="font-size:1.15rem; font-weight:800; color:#0f172a; letter-spacing:-0.4px;">KnowledgeBank</span>
   </div>
 
   <nav class="sidebar-nav">

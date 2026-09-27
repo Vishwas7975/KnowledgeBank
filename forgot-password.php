@@ -174,7 +174,7 @@ if (!empty($_SESSION['user_id'])) {
     <div class="brand-header">
       <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:8px;">
         <img src="/assets/images/logo.png" alt="KnowledgeBank Logo" class="brand-logo-img" style="margin-bottom:0;" />
-        <span style="font-size:1.45rem; font-weight:800; color:#0f172a; letter-spacing:-0.5px;">KnowledgeBank <span style="color:#2563eb;">AI</span></span>
+        <span style="font-size:1.45rem; font-weight:800; color:#0f172a; letter-spacing:-0.5px;">KnowledgeBank</span>
       </div>
       <div class="brand-sub">Password Reset & Account Recovery</div>
     </div>

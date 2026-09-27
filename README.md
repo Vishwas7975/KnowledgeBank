@@ -21,6 +21,7 @@ KnowledgeBank is a framework-free PHP backend + server-rendered frontend for int
 - [Roles](#roles)
 - [Security & Privacy](#security--privacy)
 - [Roadmap](#roadmap)
+- [Contributing](#contributing)
 - [Author](#author)
 - [License](#license)
 
@@ -159,6 +160,19 @@ Before deploying: change the bootstrap admin password, set your own SMTP credent
 
 ---
 
+## Contributing
+
+This project is meant to be a solid starting structure — fork it, extend it, or open a PR.
+
+1. Fork the repo and create a feature branch.
+2. Keep the existing style: PDO + prepared statements, env-driven config, no framework.
+3. New API endpoints go under `api/<resource>/`; new admin/employee pages go under `admin/` or `employee/` and get an entry in the matching `includes/sidebar-*.php`.
+4. Open a PR describing what changed and why.
+
+Ideas if you're looking for something to build: see the [Roadmap](#roadmap) above.
+
+---
+
 ## Author
 
 **Vishwas S** — Full-Stack Developer | Data Analyst
@@ -169,4 +183,4 @@ Before deploying: change the bootstrap admin password, set your own SMTP credent
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
